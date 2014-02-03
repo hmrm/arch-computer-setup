@@ -3,4 +3,5 @@ node default {
   include rtorrent
   include dns
   include chrome
+  include java
 }
