@@ -1,4 +1,8 @@
 class utilities {
+  package { 'cloc':
+    ensure => latest,
+  }
+
   package { 'mutt':
     ensure => latest,
   }
