@@ -4,4 +4,5 @@ node default {
   include dns
   include chrome
   include java
+  include clojure
 }
