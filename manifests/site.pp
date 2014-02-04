@@ -5,4 +5,5 @@ node default {
   include chrome
   include java
   include clojure
+  include cl
 }
