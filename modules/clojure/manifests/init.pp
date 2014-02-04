@@ -10,7 +10,7 @@ class clojure {
   $home_bin = "${home}/bin"
 
   exec { "install leiningen for ${user}":
-    path    => ['/sbin/','/bin/'],
+    path    => ['/sbin/','/bin/', '/usr/bin/'],
     command => "curl -sL ${uri} > ${home_bin}/lein",
     creates => "${home_bin}/lein",
   }
