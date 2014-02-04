@@ -6,4 +6,5 @@ node default {
   include java
   include clojure
   include cl
+  include python
 }
