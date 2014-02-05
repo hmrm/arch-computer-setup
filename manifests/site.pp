@@ -1,4 +1,8 @@
 node default {
+  exec { 'apt-get update':
+    path    => ['/sbin/','/bin/', '/usr/bin/'],
+  }
+
   include utilities
   include rtorrent
   include dns
