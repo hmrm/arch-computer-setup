@@ -1,6 +1,4 @@
 class java {
-  class { 'apt': }
-
   apt::ppa { 'ppa:webupd8team/java': }
 
   package { 'oracle-java6-installer':

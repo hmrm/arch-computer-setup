@@ -1,4 +1,5 @@
 node default {
+  class { 'apt': }
   exec { 'apt-get update':
     path    => ['/sbin/','/bin/', '/usr/bin/'],
   }
@@ -13,4 +14,5 @@ node default {
   include python
   include django
   include d
+  include emacs
 }
