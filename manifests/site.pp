@@ -8,4 +8,5 @@ node default {
   include cl
   include python
   include django
+  include d
 }
