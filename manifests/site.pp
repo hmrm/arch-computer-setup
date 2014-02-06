@@ -1,5 +1,4 @@
 node default {
-  class { 'apt': }
   exec { 'apt-get update':
     path    => ['/sbin/','/bin/', '/usr/bin/'],
   }
@@ -16,4 +15,5 @@ node default {
   include d
   include emacs
   include erlang
+  include go
 }
