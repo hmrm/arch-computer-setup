@@ -1,7 +1,9 @@
 class emacs {
+  $user = hiera('user')
   package { 'emacs-snapshot-common':
     ensure => 'purged',
   }
+
   package { 'emacs-snapshot-bin-common':
     ensure => 'purged',
   }
@@ -62,5 +64,11 @@ class emacs {
 
   package { 'emacs-goodies-el':
     ensure => 'latest',
+  }
+
+  file { "/home/${user}/.emacs":
+    mode => '744',
+    owner => $user,
+    source => 'puppet:///modules/emacs/DOTemacs',
   }
 }

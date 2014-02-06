@@ -1,0 +1,546 @@
+;;; package --- my personal dot emacs setup
+;;; Commentary:
+;; This is relatively terrible, much credit for the good stuff to github/purcell and github/bbatsov
+;;; Code:
+
+;; setup repositories
+
+(require 'package)
+(add-to-list 'package-archives
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+;;setup load function
+(defun ensure-installed (my-package)
+  (unless (package-installed-p my-package)
+    (package-refresh-contents) (package-install my-package)))
+
+;; Setting up modes for specific files
+(add-to-list 'auto-mode-alist '("\\.rtorrent\\.rc\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("DOTrtorrent\\.rc\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("DOTemacs\\'" . emacs-lisp-mode))
+(add-to-list 'auto-mode-alist '("DOTbashrc\\'" . shell-script-mode))
+(add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))
+(add-to-list 'auto-mode-alist '("\\.zsh-theme\\'" . shell-script-mode))
+
+;;autocomplete setup
+(ensure-installed 'auto-complete)
+(require 'auto-complete-config)
+(global-auto-complete-mode t)
+(setq ac-expand-on-auto-complete t)
+(setq ac-menu-height 3)
+(setq ac-dwim nil) ; To get pop-ups with docs even if a word is uniquely completed
+(setq ac-auto-show-menu t)
+
+(setq tab-always-indent 'complete)  ;; use 't when auto-complete is disabled
+(add-to-list 'completion-styles 'initials t)
+
+(defun set-auto-complete-as-completion-at-point-function ()
+  (add-to-list 'completion-at-point-functions 'auto-complete))
+(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(set-default 'ac-sources
+             '(ac-source-imenu
+               ac-source-dictionary
+               ac-source-words-in-buffer
+               ac-source-words-in-same-mode-buffers
+               ac-source-words-in-all-buffer))
+
+;;Tabs setup
+(setq-default indent-tabs-mode nil)
+
+;;All programming language setup
+(ensure-installed 'flycheck)
+(add-hook 'prog-mode-hook (lambda ()
+;			    (flyspell-prog-mode) ;TODO: this breaks autocomplete, see if there is an alternative
+			    (setq indent-tabs-mode nil)
+			    (flycheck-mode)
+			    (turn-on-eldoc-mode)))	;TODO: test this
+
+;;Language/Filetype Specific Setups
+
+;;C Setup
+(setq c-basic-offset 4)
+
+;;R setup
+(ensure-installed 'ess) ;"Emacs Speaks Statistics"
+(require 'ess-site)
+(add-to-list 'auto-mode-alist '("\\.r\\'" . R-mode))
+(add-to-list 'auto-mode-alist '("\\.R\\'" . R-mode))
+(setq-default inferior-R-program-name "R")
+(setq ess-tab-complete-in-script t)
+
+;;bison/flex setup
+(autoload 'bison-mode "bison-mode.el")
+(add-to-list 'auto-mode-alist '("\\.y$" . bison-mode))
+(autoload 'flex-mode "flex-mode.el")
+(add-to-list 'auto-mode-alist '("\\.l$" . flex-mode))
+
+;;php setup
+(ensure-installed 'php-mode)
+(ensure-installed 'php-extras)
+(ensure-installed 'auto-complete)
+(require 'auto-complete)
+(add-to-list 'ac-modes 'php-mode)
+(add-hook 'php-mode-hook (lambda ()
+			   (eldoc-mode)))
+
+;;fortran setup
+(ensure-installed 'f90-interface-browser) ;god save me if I actually have to use this
+
+;;yaml setup
+(ensure-installed 'yaml-mode)
+
+;;lua setup
+(ensure-installed 'lua-mode)
+(add-hook 'lua-mode-hook (lambda ()
+			   (eldoc-mode)
+			   (define-key lua-mode-map (kbd "C-c C-r") 'lua-send-region)
+			   (define-key lua-mode-map (kbd "C-c C-b") 'lua-send-buffer)))
+
+;;ocaml setup
+(ensure-installed 'tuareg) ;for reasons unclear to me, the ocaml mode is named tuareg. go figure.
+(add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
+(autoload 'tuareg-mode "tuareg" "Major mode for editing OCaml code" t) 
+(autoload 'tuareg-run-ocaml "tuareg" "Run an inferior OCaml process." t) 
+(autoload 'ocamldebug "ocamldebug" "Run the OCaml debugger" t)
+
+;;sql setup
+(ensure-installed 'sql-indent)
+
+;;golang setup
+(ensure-installed 'go-mode)
+(add-to-list 'ac-modes 'go-mode)
+
+;;go setup
+(ensure-installed 'gnugo) ;lol
+
+;;D setup
+(ensure-installed 'd-mode)
+(add-to-list 'ac-modes 'd-mode)
+
+;;xml/html setup
+(add-to-list 'auto-mode-alist '("\\.xml" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.xsd" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.sch" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.rng" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.xslt" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.svg" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.rss" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.gpx" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.tcx" . nxml-mode))
+(fset 'xml-mode 'nxml-mode) ;this seems redundant, but why not
+(setq nxml-child-indent 4)
+(setq nxml-attribute-indent 4)
+(setq nxml-auto-insert-xml-declaration-flag nil)
+(setq nxml-bind-meta-tab-to-complete-flag t) ;TODO: setup correct autocomplete keys
+(setq nxml-slash-auto-complete-flag t)
+
+;;css setup
+(ensure-installed 'flycheck)
+(ensure-installed 'rainbow-mode) ;makes color literals appear in their color
+(ensure-installed 'scss-mode)
+(ensure-installed 'less-css-mode)
+(ensure-installed 'sass-mode)
+(add-hook 'css-mode-hook (lambda ()
+			   (rainbow-mode)))
+
+;;makefile setup
+(add-hook 'makefile-mode-hook (lambda ()
+                                (setq indent-tabs-mode 1)))
+
+;;graphviz setup SIaC/E
+(ensure-installed 'graphviz-dot-mode)
+
+;;haskell setup
+(ensure-installed 'haskell-mode)
+(ensure-installed 'ghc)
+(ensure-installed 'ghci-completion)
+(ensure-installed 'flymake)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+(autoload 'ghc-init "ghc" nil t)
+(add-hook 'haskell-mode-hook (lambda ()
+			       (ghc-init)
+			       (define-key haskell-mode-map (kbd "C-c h") 'hoogle)
+			       (define-key haskell-mode-map (kbd "C-x C-s") 'haskell-mode-save-buffer)
+			       (flymake-mode)))
+
+(add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion)			       
+
+
+;;clojure setup ?SIR/?ADE
+(ensure-installed 'clojure-mode)
+(ensure-installed 'clojure-test-mode)
+(ensure-installed 'nrepl)
+(ensure-installed 'paredit)
+(add-hook 'clojure-mode-hook (lambda () 
+			       (turn-on-eldoc-mode)
+			       (clojure-test-mode) 
+			       (paredit-mode) 
+			       (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)))
+
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(add-hook 'nrepl-mode-hook (lambda ()
+				(paredit-mode)))
+
+;;setting up python-for-emacs, everything from github/gabrielanaro
+(add-to-list 'load-path "~/.emacs.d/emacs-for-python/")
+(require 'epy-setup)      ;; It will setup other loads, it is required!
+(require 'epy-python)     ;; If you want the python facilities [optional]
+(require 'epy-completion) ;; If you want the autocompletion settings [optional]
+(require 'epy-editing)    ;; For configurations related to editing [optional]
+(require 'epy-bindings)   ;; For my suggested keybindings [optional]
+(epy-setup-checker "pyflakes %f")
+
+;; ;;scheme setup ?SIRA/?DE
+;; (ensure-installed 'paredit)
+;; (ensure-installed 'geiser-mode) ;should I be using scheme-complete instead?
+;; (ensure-installed 'company-mode)
+;; (add-hook 'scheme-mode-hook (lambda ()
+;; 			      (turn-on-eldoc-mode)
+;; 			      (paredit-mode)
+;; 			      (company-mode)))
+
+;; common-lisp setup
+; the lispdoc function from https://github.com/purcell/emacs.d/blob/master/init-common-lisp.el is interesting
+(ensure-installed 'paredit)
+(add-to-list 'auto-mode-alist '("\\.sbclrc$" . lisp-mode)) ;sbcl config file is in lisp
+(setq inferior-lisp-program "sbcl") ;use sbcl for lisp
+(load (expand-file-name "~/quicklisp/slime-helper.el")) ;load the quicklisp version of slime stuff
+(add-hook 'lisp-mode-hook (lambda ()
+			    (slime-setup)
+			    (paredit-mode)
+			    (turn-on-eldoc-mode)
+			    (ac-emacs-lisp-mode-setup)
+			    (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)))
+
+;;perl setup
+(ensure-installed 'cperl-mode)
+(defalias 'perl-mode 'cperl-mode)
+
+;; crontab setup
+(ensure-installed 'crontab-mode)
+(add-to-list 'auto-mode-alist  '("\\.?cron\\(tab\\)?\\'" . crontab-mode))
+
+;; scala setup ?SICA/?DE
+(ensure-installed 'scala-mode2)
+(add-to-list 'load-path "~/.emacs.d/ensime/elisp/")
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+;; javascript setup ?SIRE/?DA
+(ensure-installed 'js2-mode)
+
+(defvar preferred-javascript-indent-level 2)
+(setq js2-basic-offset preferred-javascript-indent-level)
+(setq javascript-indent-level preferred-javascript-indent-level)
+
+(setq auto-mode-alist
+        (cons '("\\.js\\(\\.erb\\)?\\'" . js2-mode) auto-mode-alist))
+(eval-after-load 'js2-mode '(js2-imenu-extras-setup))
+
+; js-comint not enabled, skewer also looks sweet, if I am doing a lot of javascript, consider adding those
+
+;;setup json
+(ensure-installed 'flymake-json)
+(add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+(add-hook 'js-mode-hook 'flymake-json-maybe-load)
+(setq js-indent-level preferred-javascript-indent-level)
+
+;;setup coffee-script ?SIC/?ADE
+(ensure-installed 'coffee-mode)
+(add-hook 'coffee-mode-hook (lambda ()
+			      (set (make-local-variable 'tab-width) 2)
+			      (setq coffee-js-mode 'js2-mode)
+			      (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
+			      (and (file-exists-p (buffer-file-name))
+				   (file-exists-p (coffee-compiled-file-name))
+				   (coffee-cos-mode t)))) ;;compile on close
+
+;; csv mode setup
+(ensure-installed 'csv-mode)
+(ensure-installed 'csv-nav)
+(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
+(autoload 'csv-nav-mode "csv-nav" "Major mode for navigating comma-separated value files." t)
+(setq csv-separators '("," ";" "|" " "))
+
+;;setting markdown
+(ensure-installed 'markdown-mode)
+(add-to-list 'auto-mode-alist '("\\.mkd\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;;setting up ruby
+; TODO: There is significant rails support that could be added
+(add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Guardfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.thor\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Thorfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Vagrantfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . ruby-mode))
+(ensure-installed 'yari)
+(ensure-installed 'inf-ruby)
+(ensure-installed 'ruby-end)
+(ensure-installed 'robe)
+(ensure-installed 'auto-complete)
+(add-to-list 'ac-modes 'ruby-mode)
+(add-hook 'ruby-mode-hook (lambda ()
+			    (inf-ruby-setup-keybindings)
+			    (ruby-end-mode)
+			    (robe-mode)
+			    (push 'ac-source-robe ac-sources)))
+
+;;erlang setup
+(unless (package-installed-p 'erlang)
+  (package-refresh-contents) (ignore-errors (package-install 'erlang))) ;is the ignore-errors necessary? who knows
+(when (package-installed-p 'erlang)
+  (require 'erlang-start))
+
+;; personal customizations
+(ensure-installed 'wc-mode)
+(require 'wc-mode)
+(setq skeleton-pair nil)
+(ensure-installed 'dired+)
+(ensure-installed 'rainbow-delimiters)
+
+(display-time-mode 1)
+
+;(show-ws-toggle-show-trailing-whitespace) ;darn is that annoying
+
+(which-function-mode 1) ;TODO
+(global-rainbow-delimiters-mode) ;makes parens et al pretty
+(global-unset-key [(control z)])
+(global-unset-key [(control x)(control z)])
+
+(ensure-installed 'diminish)
+(require 'diminish)
+(eval-after-load "paredit"
+  '(diminish 'paredit-mode "π"))
+(eval-after-load "flycheck"
+  '(diminish 'flycheck-mode "φ"))
+(eval-after-load "guru-mode"
+  '(diminish 'guru-mode "グ"))
+(eval-after-load "eldoc"
+  '(diminish 'eldoc-mode "ε"))
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t)    ; rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
+
+(ensure-installed 'ack-and-a-half)
+(defalias 'ack 'ack-and-a-half)
+(defalias 'ack-same 'ack-and-a-half-same)
+(defalias 'ack-find-file 'ack-and-a-half-find-file)
+(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+
+(require 'midnight)
+(winner-mode 1) ; TODO: get comfortable with this
+(ensure-installed 'gist)
+(ensure-installed 'guru-mode)
+(require 'guru-mode)
+(guru-global-mode)
+
+(ensure-installed 'ido-ubiquitous)
+(ensure-installed 'smex)
+(ido-mode t)  ; use 'buffer rather than t to use only buffer switching
+(ido-everywhere t)
+(ido-ubiquitous-mode t)
+(setq ido-enable-flex-matching t)
+(setq ido-use-filename-at-point nil)
+(setq ido-auto-merge-work-directories-length 0)
+(setq ido-use-virtual-buffers t)
+
+(smex-initialize)
+(global-set-key "\M-x" 'smex)
+
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-defun 'disabled nil)
+
+(ensure-installed 'volatile-highlights) ;TODO: check if I like this
+(require 'volatile-highlights)
+(volatile-highlights-mode t)
+(diminish 'volatile-highlights-mode)
+
+(ensure-installed 'pointback)
+(global-pointback-mode)
+
+(ensure-installed 'ace-jump-mode)
+(ensure-installed 'multiple-cursors)
+;;adding load path
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+;;setup auto-save directory (I dont think this works)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+;;setup scripting
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)
+
+;;setup re-builder
+(require 're-builder)
+(setq reb-re-syntax 'string)
+
+;;windows setup
+(require 'windmove)
+(windmove-default-keybindings)
+
+(defun split-window-func-with-other-buffer (split-function)
+  (lexical-let ((s-f split-function))
+    (lambda ()
+      (interactive)
+      (funcall s-f)
+      (set-window-buffer (next-window) (other-buffer)))))
+
+(global-set-key "\C-x2" (split-window-func-with-other-buffer 'split-window-vertically))
+(global-set-key "\C-x3" (split-window-func-with-other-buffer 'split-window-horizontally))
+
+(defun split-window-horizontally-instead ()
+  (interactive)
+  (save-excursion
+    (delete-other-windows)
+    (funcall (split-window-func-with-other-buffer 'split-window-horizontally))))
+
+(defun split-window-vertically-instead ()
+  (interactive)
+  (save-excursion
+    (delete-other-windows)
+    (funcall (split-window-func-with-other-buffer 'split-window-vertically))))
+
+
+
+;;yank setup
+(defvar yank-indent-modes
+  '(LaTeX-mode TeX-mode)
+  "Modes in which to indent regions that are yanked (or yank-popped).
+Only modes that don't derive from `prog-mode' should be listed here.")
+
+(defvar yank-indent-blacklisted-modes
+  '(python-mode slim-mode haml-mode)
+  "Modes for which auto-indenting is suppressed.")
+
+(defvar yank-advised-indent-threshold 1000
+  "Threshold (# chars) over which indentation does not automatically occur.")
+
+(defun yank-advised-indent-function (beg end)
+  "Do indentation, as long as the region isn't too large."
+  (if (<= (- end beg) yank-advised-indent-threshold)
+      (indent-region beg end nil)))
+
+(defadvice yank (after yank-indent activate)
+  "If current mode is one of 'yank-indent-modes,
+indent yanked text (with prefix arg don't indent)."
+  (if (and (not (ad-get-arg 0))
+           (not (member major-mode yank-indent-blacklisted-modes))
+           (or (derived-mode-p 'prog-mode)
+               (member major-mode yank-indent-modes)))
+      (let ((transient-mark-mode nil))
+    (yank-advised-indent-function (region-beginning) (region-end)))))
+
+(defadvice yank-pop (after yank-pop-indent activate)
+  "If current mode is one of 'yank-indent-modes,
+indent yanked text (with prefix arg don't indent)."
+  (if (and (not (ad-get-arg 0))
+           (not (member major-mode yank-indent-blacklisted-modes))
+           (or (derived-mode-p 'prog-mode)
+               (member major-mode yank-indent-modes)))
+    (let ((transient-mark-mode nil))
+    (yank-advised-indent-function (region-beginning) (region-end)))))
+
+;;setup symbol jumping ;TODO test this
+(defun prelude-ido-goto-symbol (&optional symbol-list)
+  "Refresh imenu and jump to a place in the buffer using Ido."
+  (interactive)
+  (unless (featurep 'imenu)
+    (require 'imenu nil t))
+  (cond
+   ((not symbol-list)
+    (let ((ido-mode ido-mode)
+          (ido-enable-flex-matching
+           (if (boundp 'ido-enable-flex-matching)
+               ido-enable-flex-matching t))
+          name-and-pos symbol-names position)
+      (unless ido-mode
+        (ido-mode 1)
+        (setq ido-enable-flex-matching t))
+      (while (progn
+               (imenu--cleanup)
+               (setq imenu--index-alist nil)
+               (prelude-ido-goto-symbol (imenu--make-index-alist))
+               (setq selected-symbol
+                     (ido-completing-read "Symbol? " symbol-names))
+               (string= (car imenu--rescan-item) selected-symbol)))
+      (unless (and (boundp 'mark-active) mark-active)
+        (push-mark nil t nil))
+      (setq position (cdr (assoc selected-symbol name-and-pos)))
+      (cond
+       ((overlayp position)
+        (goto-char (overlay-start position)))
+       (t
+        (goto-char position)))))
+   ((listp symbol-list)
+    (dolist (symbol symbol-list)
+      (let (name position)
+        (cond
+         ((and (listp symbol) (imenu--subalist-p symbol))
+          (prelude-ido-goto-symbol symbol))
+         ((listp symbol)
+          (setq name (car symbol))
+          (setq position (cdr symbol)))
+         ((stringp symbol)
+          (setq name symbol)
+          (setq position
+                (get-text-property 1 'org-imenu-marker symbol))))
+        (unless (or (null position) (null name)
+                    (string= (car imenu--rescan-item) name))
+          (add-to-list 'symbol-names (substring-no-properties name))
+          (add-to-list 'name-and-pos (cons (substring-no-properties name) position))))))))
+
+
+(global-set-key (kbd "C-c i") 'prelude-ido-goto-symbol) ;TODO: test this
+
+;;setup keybindings
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
+(global-set-key "\C-x|" 'split-window-horizontally-instead)
+(global-set-key "\C-x_" 'split-window-vertically-instead)
+(global-set-key (kbd "C-x \\") 'align-regexp)
+(global-set-key (kbd "C-x m") 'eshell)
+(global-set-key (kbd "C-x M") (lambda () (interactive) (eshell t)))
+(global-set-key (kbd "C-x M-m") 'shell)
+
+(global-set-key (kbd "C-h C-f") 'find-function)
+(global-set-key (kbd "C-h C-k") 'find-function-on-key)
+(global-set-key (kbd "C-h C-v") 'find-variable)
+(global-set-key (kbd "C-h C-l") 'find-library)
+
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+;;setup hippie expand
+(setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill))
