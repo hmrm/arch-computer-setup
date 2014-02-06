@@ -15,4 +15,5 @@ node default {
   include django
   include d
   include emacs
+  include erlang
 }
