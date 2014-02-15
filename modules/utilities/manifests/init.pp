@@ -218,4 +218,16 @@ class utilities {
   package { 'sl':
     ensure => latest,
   }
+
+  package { 'manpages':
+    ensure => latest,
+  }
+
+  package { 'manpages-dev':
+    ensure => latest,
+  }
+
+  package { 'manpages-posix':
+    ensure => latest,
+  }
 }
