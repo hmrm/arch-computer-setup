@@ -1,4 +1,8 @@
 class utilities {
+  package { 'archey3':
+    ensure => latest,
+  }
+
   package { 'base':
     ensure => latest,
   }
