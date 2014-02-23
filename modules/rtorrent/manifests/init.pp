@@ -10,7 +10,6 @@ class rtorrent {
   }
 
   service { 'rtorrent':
-    ensure  => running,
     enable  => true,
     require => [
                 File['/etc/systemd/system/rtorrent.service'],
