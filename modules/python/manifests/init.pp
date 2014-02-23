@@ -7,10 +7,6 @@ class python {
     ensure => 'latest',
   }
 
-  package { 'python3':
-    ensure => 'latest',
-  }
-
   package { 'python-pip':
     ensure => 'latest',
   }

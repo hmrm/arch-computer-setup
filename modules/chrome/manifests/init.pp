@@ -1,5 +1,5 @@
 class chrome {
-  package { 'google-chrome-stable':
+  package { 'google-chrome':
     ensure   => latest,
   }
 }

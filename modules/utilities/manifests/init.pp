@@ -1,9 +1,27 @@
 class utilities {
+  package { 'openssh':
+    ensure => latest,
+  }
+
+  service { 'sshd':
+    ensure  => running,
+    enable  => true,
+    require => Package['openssh'],
+  }
+
+  package { 'tmux':
+    ensure => latest,
+  }
+
   package { 'cloc':
     ensure => latest,
   }
 
   package { 'mutt':
+    ensure => latest,
+  }
+
+  package { 'smtp-forwarder':
     ensure => latest,
   }
 
@@ -19,16 +37,13 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'dpkg':
+  package { 'ack':
     ensure => latest,
   }
 
-  package { 'gnome-shell':
-    ensure => latest,
-  }
-
-  package { 'ack-grep':
-    ensure => latest,
+  exec { '/usr/bin/ln -s /usr/bin/vendor_perl/ack /usr/bin/ack':
+    require => Package['ack'],
+    creates => '/usr/bin/ack',
   }
 
   package { 'graphviz':
@@ -39,15 +54,7 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'build-essential':
-    ensure => latest,
-  }
-
   package { 'gcc':
-    ensure => latest,
-  }
-
-  package { 'libc6-dev':
     ensure => latest,
   }
 
@@ -59,11 +66,7 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'm4':
-    ensure => latest,
-  }
-
-  package { 'libncurses-dev':
+  package { 'ncurses':
     ensure => latest,
   }
 
@@ -79,7 +82,7 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'xsltproc':
+  package { 'libxslt':
     ensure => latest,
   }
 
@@ -87,43 +90,21 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'libwxgtk2.8-dev':
-    ensure => latest,
-  }
-
-  package { 'libgl1-mesa-dev':
-    ensure => latest,
-  }
-
-  package { 'libglu1-mesa-dev':
-    ensure => latest,
-  }
-
-  package { 'libpng3':
-    ensure => latest,
-  }
-
-  package { 'aptitude':
-    ensure => latest,
-  }
-
   package { 'clang':
     ensure => latest,
   }
 
-  package { 'g++':
+  package { 'gcc-fortran':
     ensure => latest,
   }
 
-  package { 'gfortran':
+  package { 'texlive-bin':
     ensure => latest,
   }
-
-  package { 'open-cobol':
+  package { 'texlive-most':
     ensure => latest,
   }
-
-  package { 'texlive':
+  package { 'texlive-lang':
     ensure => latest,
   }
 
@@ -139,11 +120,7 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'php5':
-    ensure => latest,
-  }
-
-  package { 'r-base-dev':
+  package { 'r':
     ensure => latest,
   }
 
@@ -155,31 +132,11 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'libyaml-0-2':
+  package { 'libyaml':
     ensure => latest,
   }
 
-  package { 'git-core':
-    ensure => latest,
-  }
-
-  package { 'libyaml-dev':
-    ensure => latest,
-  }
-
-  package { 'libsqlite3-dev':
-    ensure => latest,
-  }
-
-  package { 'libxml2-dev':
-    ensure => latest,
-  }
-
-  package { 'libxslt1-dev':
-    ensure => latest,
-  }
-
-  package { 'libgdbm-dev':
+  package { 'git':
     ensure => latest,
   }
 
@@ -191,19 +148,11 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'pandoc':
-    ensure => latest,
-  }
-
   package { 'valgrind':
     ensure => latest,
   }
 
   package { 'nmap':
-    ensure => latest,
-  }
-
-  package { 'alarm-clock':
     ensure => latest,
   }
 
@@ -219,15 +168,8 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'manpages':
+  package { 'ddate':
     ensure => latest,
-  }
-
-  package { 'manpages-dev':
-    ensure => latest,
-  }
-
-  package { 'manpages-posix':
-    ensure => latest,
+    # ensure => earliest!
   }
 }
