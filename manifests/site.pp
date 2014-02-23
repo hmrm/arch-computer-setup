@@ -8,4 +8,5 @@ node default {
   include erlang
   include go
   include ntp
+  include plex
 }
