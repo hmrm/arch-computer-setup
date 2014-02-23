@@ -7,4 +7,5 @@ node default {
   include emacs
   include erlang
   include go
+  include ntp
 }

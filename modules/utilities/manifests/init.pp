@@ -1,4 +1,16 @@
 class utilities {
+  package { 'base':
+    ensure => latest,
+  }
+
+  package { 'base-devel':
+    ensure => latest,
+  }
+
+  package { 'yaourt':
+    ensure => latest,
+  }
+
   package { 'openssh':
     ensure => latest,
   }
@@ -140,7 +152,11 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'iptraf':
+  package { 'man-pages':
+    ensure => latest,
+  }
+
+  package { 'iptraf-ng':
     ensure => latest,
   }
 
