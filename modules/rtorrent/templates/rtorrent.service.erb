@@ -1,0 +1,16 @@
+;; Much credit to the Arch Wiki, where this is mostly copied from
+[Unit]
+Descriptor=rTorrent
+Requires=network.target local-fs.target
+
+[Service]
+Type=oneshot
+RemailAfterExit=yes
+KillMode=none
+User=<%= @user %>
+ExecStart=/usr/bin/tmux new-session -s rt -n rtorrent -d rtorrent
+ExecStop=/usr/bin/tmux send-keys -t rt:rtorrent C-q
+WorkingDirectory=/home/<%= @user %>/
+
+[Install]
+WantedBy=multi-user.target
