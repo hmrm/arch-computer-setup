@@ -1,4 +1,8 @@
 class utilities {
+  package { 'gimp':
+    ensure => latest,
+  }
+
   package { 'archey3':
     ensure => latest,
   }
