@@ -1,0 +1,8 @@
+xrdb -merge ~/.Xresources
+feh --bg-scale /home/hmrm/stuff/1
+compton -b -i .7 -c
+xsetroot -cursor_name left_ptr
+xmodmap ~/.xmodmap
+urxvtd &
+
+exec xmonad
