@@ -1,6 +1,17 @@
 class x11 {
   $user = hiera('user')
 
+  package { 'xmobar':
+    ensure => latest,
+  }
+
+  file { "/home/${user}/.xmobarrc":
+    mode => '755',
+    owner => $user,
+    group => 'wheel',
+    source => 'puppet:///modules/x11/DOTxmobarrc'
+  }
+
   package { 'xorg-xrdb':
     ensure => latest,
   }
@@ -38,7 +49,7 @@ class x11 {
     mode => '755',
     owner => $user,
     group => 'wheel',
-    source => 'puppet:///module/x11/DOTxinitrc',
+    source => 'puppet:///modules/x11/DOTxinitrc',
   }
 
   file { "/home/${user}/.xmonad":
@@ -66,6 +77,6 @@ class x11 {
     mode => '755',
     owner => $user,
     group => 'wheel',
-    source => 'puppet:///module/x11/DOTxmodmap',
+    source => 'puppet:///modules/x11/DOTxmodmap',
   }
 }

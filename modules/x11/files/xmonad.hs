@@ -1,5 +1,7 @@
 import XMonad
 import XMonad.Layout.NoBorders
+import XMonad.Hooks.ManageDocks
+
 
 -- LAYOUTS
 import XMonad.Layout.Spacing
@@ -11,7 +13,7 @@ import XMonad.Layout.Grid
 --------------------------------------------------------------------------------------------------------------------
 -- DECLARE WORKSPACES RULES
 --------------------------------------------------------------------------------------------------------------------
-myLayout = tiledSpace ||| grid ||| tiled
+myLayout = avoidStruts (tiledSpace ||| grid ||| tiled)
 	where
 		tiled  		= spacing 5 $ ResizableTall nmaster delta ratio []
 		tiledSpace  	= spacing 60 $ ResizableTall nmaster delta ratio []

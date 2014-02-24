@@ -4,5 +4,6 @@ compton -b -i .7 -c
 xsetroot -cursor_name left_ptr
 xmodmap ~/.xmodmap
 urxvtd &
+xmobar &
 
 exec xmonad

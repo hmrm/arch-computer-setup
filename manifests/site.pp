@@ -9,4 +9,5 @@ node default {
   include go
   include ntp
   include plex
+  include x11
 }
