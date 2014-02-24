@@ -3,6 +3,10 @@ class python {
     ensure => 'latest',
   }
 
+  package { 'python2':
+    ensure => 'latest',
+  }
+
   package { 'ipython':
     ensure => 'latest',
   }
