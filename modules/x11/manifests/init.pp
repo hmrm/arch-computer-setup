@@ -24,6 +24,10 @@ class x11 {
     ensure => latest,
   }
 
+  package { 'xorg-xmodmap':
+    ensure => latest,
+  }
+
   package { 'rxvt-unicode':
     ensure => latest,
   }
