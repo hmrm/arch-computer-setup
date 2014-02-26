@@ -10,4 +10,5 @@ node default {
   include ntp
   include plex
   include x11
+  include shell
 }
