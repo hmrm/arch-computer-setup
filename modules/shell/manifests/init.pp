@@ -18,7 +18,7 @@ class shell {
     ensure => present,
     mode => '755',
     source => 'puppet:///modules/shell/DOTaliases',
-    ownder => $user,
+    owner => $user,
     group => 'wheel',
   }
 }
