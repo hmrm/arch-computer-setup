@@ -1,4 +1,8 @@
 class utilities {
+  package { 'intellij-idea-community-edition':
+    ensure => latest,
+  }
+
   package { 'gimp':
     ensure => latest,
   }
