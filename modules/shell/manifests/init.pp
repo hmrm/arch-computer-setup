@@ -8,9 +8,17 @@ class shell {
   file { "/home/${user}/.zshrc":
     ensure => present,
     mode   => '755',
-    source => '/usr/share/oh-my-zsh/zshrc',
+    source => 'puppet:///modules/shell/DOTzshrc',
     require => Package['oh-my-zsh-git'],
     owner => $user,
+    group => 'wheel',
+  }
+
+  file { "/home/${user}/.aliases":
+    ensure => present,
+    mode => '755',
+    source => 'puppet:///modules/shell/DOTaliases',
+    ownder => $user,
     group => 'wheel',
   }
 }

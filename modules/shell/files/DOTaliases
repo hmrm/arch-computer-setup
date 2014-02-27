@@ -1,0 +1,4 @@
+alias emacs='emacsclient --alternate-editor="" -t'
+alias chr='google-chrome-stable'
+alias papply='sudo puppet apply ~/computer-setup/manifests/site.pp --modulepath=~/computer-setup/modules'
+alias BOOM='yaourt -Syyu'
