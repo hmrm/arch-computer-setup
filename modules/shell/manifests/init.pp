@@ -21,4 +21,12 @@ class shell {
     owner => $user,
     group => 'wheel',
   }
+
+  file { "/home/${user}/.dircolors":
+    ensure => present,
+    mode => '755',
+    source => 'puppet:///modules/shell/DOTdircolors',
+    owner => $user,
+    group => 'wheel',
+  }
 }
