@@ -11,4 +11,5 @@ node default {
   include plex
   include x11
   include shell
+  include haskell
 }
