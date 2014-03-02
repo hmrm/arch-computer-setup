@@ -9,6 +9,34 @@ class rtorrent {
     notify  => Service['rtorrent'],
   }
 
+  file { "/home/${user}/.torrent.d":
+    mode => '644',
+    owner => $user,
+    group => 'wheel',
+    ensure => 'directory',
+  }
+
+  file { "/home/${user}/.torrent.d/torrents":
+    mode => '644',
+    owner => $user,
+    group => 'wheel',
+    ensure => 'directory',
+  }
+
+  file { "/home/${user}/.torrent.d/nouptorrents":
+    mode => '644',
+    owner => $user,
+    group => 'wheel',
+    ensure => 'directory',
+  }
+
+  file { "/home/${user}/.rtorrent.rc":
+    mode => '644',
+    owner => $user,
+    group => 'wheel',
+    source => 'puppet:///modules/rtorrent/DOTrtorrent.rc',
+  }
+
   service { 'rtorrent':
     enable  => true,
     require => [

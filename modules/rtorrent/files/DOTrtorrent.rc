@@ -1,0 +1,10 @@
+download_rate = 1000
+upload_rate = 1000
+
+directory = ~/external
+
+throttle_up = hardlyupload,5
+
+#Requires directories ~/.torrent.d/torrents and ~/.torrent.d/nouptorrents
+schedule = watch_directory_1,5,5,load_start=~/.torrent.d/torrents/*.torrent
+schedule = watch_directory_1,5,5,"load_start=~/.torrent.d/nouptorrents/*.torrent,d.set_throttle_name=hardlyupload"
