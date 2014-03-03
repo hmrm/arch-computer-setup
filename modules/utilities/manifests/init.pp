@@ -1,4 +1,7 @@
 class utilities {
+  $email = hiera('email')
+  $fullname = hiera('fullname')
+
   package { 'sublime-text-2':
     ensure => latest,
   }
@@ -166,6 +169,18 @@ class utilities {
 
   package { 'git':
     ensure => latest,
+  }
+
+  exec { "/usr/bin/git config --global --replace-all user.email ${email}":
+    require => Package['git'],
+  }
+
+  exec { "/usr/bin/git config --global --replace-all user.name ${fullname}":
+    require => Package['git'],
+  }
+
+  exec { '/usr/bin/git config --global color.ui true':
+    require => Package['git'],
   }
 
   package { 'man-pages':
