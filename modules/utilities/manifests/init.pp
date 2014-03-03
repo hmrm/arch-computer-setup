@@ -1,4 +1,8 @@
 class utilities {
+  package { 'sublime-text-2':
+    ensure => latest,
+  }
+
   package { 'intellij-idea-community-edition':
     ensure => latest,
   }
