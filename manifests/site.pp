@@ -15,4 +15,5 @@ node default {
   include nodejs
   include ruby
   include ocaml
+  include usercontrol
 }
