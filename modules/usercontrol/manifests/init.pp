@@ -3,7 +3,8 @@ class usercontrol {
   $group = hiera('group')
 
   user { $user :
-    manage_homedir => true,
-    group => $group,
+    ensure => present,
+    managehome => true,
+    gid => $group,
   }
 }
