@@ -2,7 +2,7 @@ class utilities {
   $email = hiera('email')
   $fullname = hiera('fullname')
 
-  package { 'sublime-text-2':
+  package { 'sublime-text':
     ensure => latest,
   }
 
