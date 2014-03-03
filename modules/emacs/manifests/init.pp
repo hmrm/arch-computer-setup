@@ -1,5 +1,6 @@
 class emacs {
   $user = hiera('user')
+  $group = hiera('group')
   
   package { 'emacs-nox':
     ensure => latest,
@@ -8,7 +9,7 @@ class emacs {
   file { "/home/${user}/.emacs":
     mode => '744',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     source => 'puppet:///modules/emacs/DOTemacs',
   }
 }

@@ -1,5 +1,6 @@
 class rtorrent {
   $user = hiera('user')
+  $group = hiera('group')
 
   file { '/etc/systemd/system/rtorrent.service':
     mode    => '644',
@@ -12,28 +13,28 @@ class rtorrent {
   file { "/home/${user}/.torrent.d":
     mode => '644',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     ensure => 'directory',
   }
 
   file { "/home/${user}/.torrent.d/torrents":
     mode => '644',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     ensure => 'directory',
   }
 
   file { "/home/${user}/.torrent.d/nouptorrents":
     mode => '644',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     ensure => 'directory',
   }
 
   file { "/home/${user}/.rtorrent.rc":
     mode => '644',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     source => 'puppet:///modules/rtorrent/DOTrtorrent.rc',
   }
 

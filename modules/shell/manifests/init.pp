@@ -1,5 +1,6 @@
 class shell {
   $user = hiera('user')
+  $group = hiera('group')
 
   package { 'oh-my-zsh-git':
     ensure => latest,
@@ -11,7 +12,7 @@ class shell {
     source => 'puppet:///modules/shell/DOTzshrc',
     require => Package['oh-my-zsh-git'],
     owner => $user,
-    group => 'wheel',
+    group => $group,
   }
 
   file { "/home/${user}/.aliases":
@@ -19,7 +20,7 @@ class shell {
     mode => '755',
     source => 'puppet:///modules/shell/DOTaliases',
     owner => $user,
-    group => 'wheel',
+    group => $group,
   }
 
   file { "/home/${user}/.dircolors":
@@ -27,6 +28,6 @@ class shell {
     mode => '755',
     source => 'puppet:///modules/shell/DOTdircolors',
     owner => $user,
-    group => 'wheel',
+    group => $group,
   }
 }

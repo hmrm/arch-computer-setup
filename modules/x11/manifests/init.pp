@@ -1,5 +1,6 @@
 class x11 {
   $user = hiera('user')
+  $group = hiera('group')
 
   package { 'xmobar':
     ensure => latest,
@@ -8,7 +9,7 @@ class x11 {
   file { "/home/${user}/.xmobarrc":
     mode => '755',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     source => 'puppet:///modules/x11/DOTxmobarrc'
   }
 
@@ -52,7 +53,7 @@ class x11 {
   file { "/home/${user}/.xinitrc":
     mode => '755',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     source => 'puppet:///modules/x11/DOTxinitrc',
   }
 
@@ -60,27 +61,27 @@ class x11 {
     mode => '755',
     ensure => directory,
     owner => $user,
-    group => 'wheel',
+    group => $group,
   }
 
   file { "/home/${user}/.xmonad/xmonad.hs":
     mode => '755',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     source => 'puppet:///modules/x11/xmonad.hs',
   }
 
   file { "/home/${user}/.Xresources":
     mode => '755',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     source => 'puppet:///modules/x11/DOTXresources'
   }
 
   file { "/home/${user}/.xmodmap":
     mode => '755',
     owner => $user,
-    group => 'wheel',
+    group => $group,
     source => 'puppet:///modules/x11/DOTxmodmap',
   }
 }
