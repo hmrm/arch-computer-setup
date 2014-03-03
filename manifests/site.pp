@@ -14,4 +14,5 @@ node default {
   include haskell
   include nodejs
   include ruby
+  include ocaml
 }
