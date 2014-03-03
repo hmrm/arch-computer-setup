@@ -12,4 +12,5 @@ node default {
   include x11
   include shell
   include haskell
+  include nodejs
 }
