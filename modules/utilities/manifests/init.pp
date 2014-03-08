@@ -1,6 +1,7 @@
 class utilities {
   $email = hiera('email')
   $fullname = hiera('fullname')
+  $user = hiera('user')
 
   package { 'sublime-text':
     ensure => latest,
@@ -171,16 +172,25 @@ class utilities {
     ensure => latest,
   }
 
-  exec { "/usr/bin/git config --global --replace-all user.email ${email}":
+  exec { "/usr/bin/git config --global --replace-all user.email \"${email}\"":
+    user => $user,
     require => Package['git'],
+    cwd => "/home/${user}/",
+    environment => ["HOME=/home/${user}/"],
   }
 
-  exec { "/usr/bin/git config --global --replace-all user.name ${fullname}":
+  exec { "/usr/bin/git config --global --replace-all user.name \"${fullname}\"":
+    user => $user,
     require => Package['git'],
+    cwd => "/home/${user}/",
+    environment => ["HOME=/home/${user}/"],
   }
 
   exec { '/usr/bin/git config --global color.ui true':
+    user => $user,
     require => Package['git'],
+    cwd => "/home/${user}/",
+    environment => ["HOME=/home/${user}/"],
   }
 
   package { 'man-pages':
