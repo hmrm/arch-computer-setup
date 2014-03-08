@@ -15,6 +15,14 @@ class shell {
     group => $group,
   }
 
+  file { "/home/${user}/.zprofile":
+    ensure  => present,
+    mode    => '755',
+    source  => 'puppet:///modules/shell/DOTzprofile',
+    owner   => $user,
+    group   => $group,
+  }
+
   file { "/home/${user}/.aliases":
     ensure => present,
     mode => '755',
