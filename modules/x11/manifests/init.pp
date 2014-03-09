@@ -2,6 +2,10 @@ class x11 {
   $user = hiera('user')
   $group = hiera('group')
 
+  package { 'dmenu':
+    ensure => latest,
+  }
+
   package { 'xmobar':
     ensure => latest,
   }
