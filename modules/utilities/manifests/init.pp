@@ -3,6 +3,10 @@ class utilities {
   $fullname = hiera('fullname')
   $user = hiera('user')
 
+  package { 'vagrant':
+    ensure => latest,
+  }
+
   package { 'sublime-text':
     ensure => latest,
   }
