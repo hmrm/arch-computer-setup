@@ -244,13 +244,13 @@ class utilities {
     mode   => '755',
     owner  => $user,
     group  => $group,
-    source => 'puppet:///module/utilities/mostmem',
+    source => 'puppet:///modules/utilities/mostmem',
   }
 
   file { "/home/${user}/bin/mostcpu":
     mode   => '755',
     owner  => $user,
     group  => $group,
-    source => 'puppet:///module/utilities/mostcpu',
+    source => 'puppet:///modules/utilities/mostcpu',
   }
 }
