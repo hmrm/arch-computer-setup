@@ -229,4 +229,24 @@ class utilities {
     ensure => latest,
     # ensure => earliest!
   }
+
+  file { "/home/${user}/bin":
+    ensure => directory,
+    owner  => $user,
+    group  => $group,
+  }
+
+  file { "/home/${user}/bin/mostmem":
+    mode   => '755',
+    owner  => $user,
+    group  => $group,
+    source => 'puppet:///module/utilities/mostmem',
+  }
+
+  file { "/home/${user}/bin/mostcpu":
+    mode   => '755',
+    owner  => $user,
+    group  => $group,
+    source => 'puppet:///module/utilities/mostcpu',
+  }
 }

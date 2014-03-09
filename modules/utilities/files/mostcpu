@@ -1,0 +1,1 @@
+top -b -n 1 | sed 1,6d | head -2 | tail -1 | awk '{print $12 " " $9;}' | rev | cut -c 3- | rev | awk '{printf ("%-7s %3s", $1, $2);}'
