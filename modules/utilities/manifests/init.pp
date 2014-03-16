@@ -172,6 +172,10 @@ class utilities {
     ensure => latest,
   }
 
+  package { 'unzip':
+    ensure => latest,
+  }
+
   package { 'git':
     ensure => latest,
   }
