@@ -3,6 +3,18 @@ class utilities {
   $fullname = hiera('fullname')
   $user = hiera('user')
 
+  package { 'reflector':
+    ensure => latest,
+  }
+
+  cron { 'reflector-update':
+    command => '/usr/bin/reflector -l 100 --sort rate --save /etc/pacman.d/mirrorlist --connection-timeout 1',
+    user    => 'root',
+    hour    => '12',
+    minute  => '0',
+    require => Package['reflector'],
+  }
+
   package { 'vagrant':
     ensure => latest,
   }
