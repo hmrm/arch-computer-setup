@@ -3,6 +3,10 @@ class utilities {
   $fullname = hiera('fullname')
   $user = hiera('user')
 
+  package { 'syncthing':
+    ensure => latest,
+  }
+
   package { 'reflector':
     ensure => latest,
   }
