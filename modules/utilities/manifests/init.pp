@@ -3,7 +3,7 @@ class utilities {
   $fullname = hiera('fullname')
   $user = hiera('user')
 
-  package { 'syncthing':
+  package { 'btsync':
     ensure => latest,
   }
 
