@@ -35,7 +35,6 @@
 (global-auto-complete-mode t)
 (setq ac-expand-on-auto-complete t)
 (setq ac-menu-height 3)
-(setq ac-dwim nil) ; To get pop-ups with docs even if a word is uniquely completed
 (setq ac-auto-show-menu t)
 
 (setq tab-always-indent 'complete)  ;; use 't when auto-complete is disabled
@@ -57,7 +56,6 @@
 ;;All programming language setup
 (ensure-installed 'flycheck)
 (add-hook 'prog-mode-hook (lambda ()
-;			    (flyspell-prog-mode) ;TODO: this breaks autocomplete, see if there is an alternative
 			    (setq indent-tabs-mode nil)
 			    (flycheck-mode)
 			    (turn-on-eldoc-mode)))	;TODO: test this
@@ -84,7 +82,6 @@
 ;;php setup
 (ensure-installed 'php-mode)
 (ensure-installed 'php-extras)
-(ensure-installed 'auto-complete)
 (require 'auto-complete)
 (add-to-list 'ac-modes 'php-mode)
 (add-hook 'php-mode-hook (lambda ()
@@ -158,6 +155,7 @@
 (ensure-installed 'graphviz-dot-mode)
 
 ;;haskell setup
+;; TODO: Get ghcmod working properly
 (ensure-installed 'haskell-mode)
 (ensure-installed 'ghc)
 (ensure-installed 'ghci-completion)
@@ -172,7 +170,7 @@
 			       (define-key haskell-mode-map (kbd "C-x C-s") 'haskell-mode-save-buffer)
 			       (flymake-mode)))
 
-(add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion)			       
+(add-hook 'inferior-haskell-mode-hook 'turn-on-ghci-completion)
 
 
 ;;clojure setup ?SIR/?ADE
@@ -191,13 +189,13 @@
 				(paredit-mode)))
 
 ;;setting up python-for-emacs, everything from github/gabrielanaro
-(add-to-list 'load-path "~/.emacs.d/emacs-for-python/")
-(require 'epy-setup)      ;; It will setup other loads, it is required!
-(require 'epy-python)     ;; If you want the python facilities [optional]
-(require 'epy-completion) ;; If you want the autocompletion settings [optional]
-(require 'epy-editing)    ;; For configurations related to editing [optional]
-(require 'epy-bindings)   ;; For my suggested keybindings [optional]
-(epy-setup-checker "pyflakes %f")
+;; (add-to-list 'load-path "~/.emacs.d/emacs-for-python/")
+;; (require 'epy-setup)      ;; It will setup other loads, it is required!
+;; (require 'epy-python)     ;; If you want the python facilities [optional]
+;; (require 'epy-completion) ;; If you want the autocompletion settings [optional]
+;; (require 'epy-editing)    ;; For configurations related to editing [optional]
+;; (require 'epy-bindings)   ;; For my suggested keybindings [optional]
+;; (epy-setup-checker "pyflakes %f")
 
 ;; ;;scheme setup ?SIRA/?DE
 ;; (ensure-installed 'paredit)
@@ -210,16 +208,16 @@
 
 ;; common-lisp setup
 ; the lispdoc function from https://github.com/purcell/emacs.d/blob/master/init-common-lisp.el is interesting
-(ensure-installed 'paredit)
-(add-to-list 'auto-mode-alist '("\\.sbclrc$" . lisp-mode)) ;sbcl config file is in lisp
-(setq inferior-lisp-program "sbcl") ;use sbcl for lisp
-(load (expand-file-name "~/quicklisp/slime-helper.el")) ;load the quicklisp version of slime stuff
-(add-hook 'lisp-mode-hook (lambda ()
-			    (slime-setup)
-			    (paredit-mode)
-			    (turn-on-eldoc-mode)
-			    (ac-emacs-lisp-mode-setup)
-			    (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)))
+;; (ensure-installed 'paredit)
+;; (add-to-list 'auto-mode-alist '("\\.sbclrc$" . lisp-mode)) ;sbcl config file is in lisp
+;; (setq inferior-lisp-program "sbcl") ;use sbcl for lisp
+;; (load (expand-file-name "~/quicklisp/slime-helper.el")) ;load the quicklisp version of slime stuff
+;; (add-hook 'lisp-mode-hook (lambda ()
+;; 			    (slime-setup)
+;; 			    (paredit-mode)
+;;			    (turn-on-eldoc-mode)
+;;			    (ac-emacs-lisp-mode-setup)
+;;			    (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)))
 
 ;;perl setup
 (ensure-installed 'cperl-mode)
@@ -231,9 +229,10 @@
 
 ;; scala setup ?SICA/?DE
 (ensure-installed 'scala-mode2)
-(add-to-list 'load-path "~/.emacs.d/ensime/elisp/")
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+;; TODO: actually have ensime work
+;; (add-to-list 'load-path "~/.emacs.d/ensime/elisp/")
+;; (require 'ensime)
+;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 ;; javascript setup ?SIRE/?DA
 (ensure-installed 'js2-mode)
@@ -313,7 +312,6 @@
 (setq skeleton-pair nil)
 (ensure-installed 'dired+)
 (ensure-installed 'rainbow-delimiters)
-
 (display-time-mode 1)
 
 ;(show-ws-toggle-show-trailing-whitespace) ;darn is that annoying
@@ -321,7 +319,6 @@
 (which-function-mode 1) ;TODO
 (global-rainbow-delimiters-mode) ;makes parens et al pretty
 (global-unset-key [(control z)])
-(global-unset-key [(control x)(control z)])
 
 (ensure-installed 'diminish)
 (require 'diminish)
