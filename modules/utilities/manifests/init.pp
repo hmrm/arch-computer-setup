@@ -150,15 +150,15 @@ class utilities {
     ensure => latest,
   }
 
-  package { 'texlive-bin':
-    ensure => latest,
-  }
-  package { 'texlive-most':
-    ensure => latest,
-  }
-  package { 'texlive-lang':
-    ensure => latest,
-  }
+#  package { 'texlive-bin':
+#    ensure => latest,
+#  }
+#  package { 'texlive-most':
+#    ensure => latest,
+#  }
+#  package { 'texlive-lang':
+#    ensure => latest,
+#  }
 
   package { 'automake':
     ensure => latest,

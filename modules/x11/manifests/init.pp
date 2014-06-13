@@ -25,6 +25,10 @@ class x11 {
     ensure => latest,
   }
 
+  package { 'xorg-xinit':
+    ensure => latest,
+  }
+
   package { 'xorg-xsetroot':
     ensure => latest,
   }

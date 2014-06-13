@@ -1,5 +1,5 @@
 :backends: yaml
 :yaml:
   :datadir: /etc/puppet/hiera
-hierarchy: common
-logger: console
+:hierarchy: common
+:logger: console
